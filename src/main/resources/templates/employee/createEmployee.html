@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Salary Service</title>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+        <style>
+            div.container.marketing{
+                margin-right: auto;
+                margin-left: auto;
+            }
+            div.mimi{
+                width: 280px;
+                float: left;
+                height: 100%;
+            }
+        </style>
+        
+        <script>
+            $(document).ready(function() {
+                $('#boss').select2({
+                    placeholder: "Поиск сотрудника",
+                    allowClear: true
+                });
+            });
+            
+            document.addEventListener("DOMContentLoaded", function() {
+              var currentUrl = window.location.pathname;
+
+              var links = document.querySelectorAll(".nav-link");
+
+              links.forEach(function(link) {
+                if (link.getAttribute("href") === currentUrl) {
+                  link.classList.add("active");
+                } else {
+                  link.classList.add("link-dark");
+                }
+              });
+            });
+        </script>
+    </head>
+    
+    <body> 
+        <div class="mimi" th:insert="head :: menu"></div>
+        
+        <div class="container">
+            <h2 class="text-info">Добавление сотрудника</h2>
+        </div>
+        
+        <div class="container">
+            <form th:action="@{/employees/createemployee}" th:object="${employee}" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="name">Имя сотрудника</label>
+                            <input type="text" th:field="*{name}" id="name" placeholder="Напишите полное имя сотрудника" class="form-control me-2" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label" for="date">Дата начала работы</label>
+                            <input type="date" class="form-control me-2" id="date" th:field="*{date}" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="group" class="form-label">Должность</label>
+                            <select class="form-select me-2" id="group" th:field="*{group}" required>
+                                <option th:each="g : ${group}" th:value="${g}" th:text="${g}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="salary" class="form-label">Заработная плата</label>
+                            <input type="number" th:field="*{salary}" id="salary" placeholder="Напишите заработную плату" class="form-control me-2" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="boss" class="form-label">Начальник</label>
+                            <select class="form-select me-2" id="boss" th:field="*{boss}">
+                                <option th:each="boss : ${employeesBoss}" th:value="${boss.id}" th:text="${boss.name}"></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                  
+                <button type="submit" class="btn btn-dark btn-lg">Добавить нового сотрудника</button>
+            </form>
+        </div>
+    </body>
+</html>
+
+
+

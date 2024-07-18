@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Salary Service</title>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+        <style>
+            hr.featurette-divider{
+                box-sizing: border-box;
+                color: inherit;
+                border: 0;
+                border-top: var(--bs-border-width) solid;
+                opacity: .25;
+                margin: 5rem 0;
+
+            }
+            div.container.marketing{
+                margin-right: auto;
+                margin-left: auto;
+            }
+            div.mimi{
+                width: 280px;
+                float: left;
+                height: 100%;
+            }
+            .notification {
+                display: none;
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                padding: 10px;
+                background-color: #4CAF50;
+                color: white;
+                z-index: 9999;
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var notification = document.getElementById('notification');
+                notification.style.display = 'block';
+                setTimeout(function() {
+                    notification.style.display = 'none';
+                }, 5000);
+            });
+        </script>
+    </head>
+    
+    <body> 
+        <div class="mimi" th:insert="head :: menu"></div>
+        
+        <div th:if="${message}" class="alert" role="alert">
+            <div id="notification" class="notification" th:text="${message}"></div>
+        </div>
+        
+        <div class="container">
+            <h2 class="text-info">Данные сотрудника</h2>
+        </div>
+        
+        <div class="container">
+            <div class="card">
+                <div class="card-body" th:each="e : ${employee}">
+                    <h5 class="card-title" th:text="'Имя: ' + ${e.name}"></h5>
+                    <p class="card-text" th:text="'Дата начала работы: ' + ${e.date}"></p>
+                    <p class="card-text" th:text="'Должность: ' + ${e.group}"></p>
+                    <p class="card-text" th:text="'Заработная плата: ' + ${e.salary}"></p>
+                    <p class="card-text" th:if="${e.boss != null}" th:text="'Начальник: ' + ${e.boss.name}"></p>
+                    
+                    <form th:action="@{'/employees/deleteemployee/' + ${e.id}}" method="post" class="form-inline">
+                        <a th:href="@{'/employees/employeecard/' + ${e.id} + '/updatecard'}" class="btn btn-primary mr-2">Обновление данных</a>
+                        <button type="submit" class="btn btn-danger mr-2" onclick="return confirm('Вы уверены, что хотите удалить этого сотрудника?')">Удаление сотрудника</button>
+                        <a th:href="@{'/salary/' + ${e.id}}" class="btn btn-dark mr-2">Расчитать заработную плату</a>
+                    </form>                    
+                </div>
+            </div>
+            
+            <div th:if="${subordinates.size() > 0}" class="container">
+                <h2 class="text-info">Список подчиненных</h2>
+            </div>
+            
+            <hr th:if="${subordinates.size() > 0}" class="featurette-divider">
+            
+            <div th:if="${subordinates.size() > 0}" class="container">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th><a href="?sort=name">Имя</a></th>
+                        <th><a href="?sort=start_date">Дата начала работы</a></th>
+                        <th><a href="?sort=position">Должность</a></th>
+                        <th><a href="?sort=salary">Заработная плата</a></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="s : ${subordinates}">
+                        <td><a th:href="@{'/employees/employeecard/'+${s.id}}" th:text="${s.name}"></a></td>
+                        <td th:text="${s.date}"></td>
+                        <td th:text="${s.group}"></td>
+                        <td th:text="${s.salary}"></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </body>
+</html>

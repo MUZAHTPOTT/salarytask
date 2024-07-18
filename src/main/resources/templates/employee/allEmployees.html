@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<html>
+    <head>
+        <title>Salary Service</title>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"/>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+        <style>
+            div.container.marketing{
+                margin-right: auto;
+                margin-left: auto;
+            }
+            div.mimi{
+                width: 280px;
+                float: left;
+                height: 100%;
+            }
+            .notification {
+                display: none;
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                padding: 10px;
+                background-color: #4CAF50;
+                color: white;
+                z-index: 9999;
+            }
+        </style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+              var currentUrl = window.location.pathname;
+
+              var links = document.querySelectorAll(".nav-link");
+
+              links.forEach(function(link) {
+                if (link.getAttribute("href") === currentUrl) {
+                  link.classList.add("active");
+                } else {
+                  link.classList.add("link-dark");
+                }
+              });
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                var notification = document.getElementById('notification');
+                notification.style.display = 'block';
+                setTimeout(function() {
+                    notification.style.display = 'none';
+                }, 5000);
+            });
+        </script>
+    </head>
+    
+    <body> 
+        <div class="mimi" th:insert="head :: menu"></div>
+        
+        <div th:if="${message}" class="alert" role="alert">
+            <div id="notification" class="notification" th:text="${message}"></div>
+        </div>
+        
+        <div class="container">
+            <h2 class="text-info">Список сотрудников</h2>
+        </div>
+        <div class="container">
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                  <tr>
+                    <th><a href="?sort=name">Имя</a></th>
+                    <th><a href="?sort=start_date">Дата начала работы</a></th>
+                    <th><a href="?sort=position">Должность</a></th>
+                    <th><a href="?sort=salary">Заработная плата</a></th>
+                    <th><a href="?sort=salary">Начальник</a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="e : ${employees}">
+                    <td><a th:href="@{'/employees/employeecard/'+${e.id}}" th:text="${e.name}"></a></td>
+                    <td th:text="${e.date}"></td>
+                    <td th:text="${e.group}"></td>
+                    <td th:text="${e.salary}"></td>
+                    <td th:if="${e.boss != null}"><a th:href="@{'/employees/employeecard/'+${e.boss.id}}" th:text="${e.boss.name}"></a></td>
+                    <td th:unless="${e.boss != null}"></td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

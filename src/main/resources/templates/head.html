@@ -1,0 +1,31 @@
+<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;" th:fragment="menu">   
+    <span class="fs-4"><i class="bi bi-bootstrap-fill" width="64" height="64"></i> Сервис расчета заработной платы </span>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a th:href="@{/}" class="nav-link link-dark" aria-current="page">
+          <i class="bi bi-house-fill"></i>
+          Главная
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/employees/allemployees}" class="nav-link link-dark">
+          <i class="bi bi-people"></i>
+          Список сотрудников
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/employees/createemployee}" class="nav-link link-dark">
+          <i class="bi bi-person-plus"></i>
+          Новый сотрудник
+        </a>
+      </li>
+      <li>
+        <a th:href="@{/salary/companysalary}" class="nav-link link-dark">
+          <i class="bi bi-calendar-date"></i>
+          Расчет заработной платы 
+        </a>
+      </li>
+    </ul>
+
+</div>
